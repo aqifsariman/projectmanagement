@@ -11,12 +11,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import personal.projectmanagement.model.Task;
 import personal.projectmanagement.model.User;
 import personal.projectmanagement.service.UserService;
 
 @RestController
 @RequestMapping("/api/project-management")
-public class UserController {
+public class UserRestController {
     @Autowired
     UserService userSvc;
 
@@ -36,6 +37,12 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<Boolean> createUser(@ModelAttribute("userForm") User user) {
         Boolean created = userSvc.createUser(user);
+        return ResponseEntity.ok().body(created);
+    }
+
+    @PostMapping("/task")
+    public ResponseEntity<Boolean> createTask(@ModelAttribute("taskForm") Task task) {
+        Boolean created = userSvc.createTask(task);
         return ResponseEntity.ok().body(created);
     }
 }
