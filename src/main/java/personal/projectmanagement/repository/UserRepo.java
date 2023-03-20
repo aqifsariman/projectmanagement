@@ -21,6 +21,8 @@ public class UserRepo {
     private final String CREATE_USER_SQL = "insert into user (username, full_name, email, password, phone, date_of_birth, gender, role_id, designation_id) values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private final String CREATE_TASK_SQL = "insert into task (title, description, status_id, priority_id, assignee_id, user_id) values (?, ?, ? ,? ,? ,?)";
     private final String DELETE_TASK_SQL = "delete from task where id = ?";
+    private final String ALL_TASK_BY_USER_SQL = "select * from task where user_id = ?";
+    private final String EDIT_TASK_SQL = "update task set title = ?, description = ?, status_id = ?, priority_id = ? where id = ?";
 
     public List<User> findAllUsers() {
         return jdbcTemplate.query(ALL_USERS_SQL, BeanPropertyRowMapper.newInstance(User.class));
@@ -49,6 +51,16 @@ public class UserRepo {
     public Boolean deleteTask(Integer taskId) {
         Integer deleteTask = jdbcTemplate.update(DELETE_TASK_SQL, taskId);
         return (deleteTask > 0) ? true : false;
+    }
+
+    public List<Task> findAllTaskByUser(Integer userId) {
+        return jdbcTemplate.query(ALL_TASK_BY_USER_SQL, BeanPropertyRowMapper.newInstance(Task.class), userId);
+    }
+
+    public Boolean editTask(Task task) {
+        Integer edited = jdbcTemplate.update(EDIT_TASK_SQL, task.getTitle(), task.getDescription(), task.getStatusId(),
+                task.getPriorityId(), task.getId());
+        return (edited > 0) ? true : false;
     }
 
 }

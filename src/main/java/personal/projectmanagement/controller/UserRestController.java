@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,9 +31,9 @@ public class UserRestController {
         return ResponseEntity.ok().body(users);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<User> findUserById(@PathVariable("id") Integer id) {
-        User user = userSvc.findUserById(id);
+    @GetMapping("/{userId}")
+    public ResponseEntity<User> findUserById(@PathVariable("userId") Integer userId) {
+        User user = userSvc.findUserById(userId);
         return ResponseEntity.ok().body(user);
     }
 
@@ -52,4 +54,17 @@ public class UserRestController {
         Boolean deleted = userSvc.deleteTask(taskId);
         return ResponseEntity.ok().body(deleted);
     }
+
+    @GetMapping("/task/{userId}")
+    public ResponseEntity<List<Task>> findTaskByUser(@PathVariable("userId") Integer userId) {
+        List<Task> tasks = userSvc.findTaskByUser(userId);
+        return ResponseEntity.ok().body(tasks);
+    }
+
+    @PutMapping
+    public ResponseEntity<Boolean> editTask(@RequestBody Task task) {
+        Boolean edited = userSvc.editTask(task);
+        return ResponseEntity.ok().body(edited);
+    }
+
 }

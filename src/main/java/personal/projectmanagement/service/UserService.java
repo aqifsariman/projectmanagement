@@ -34,4 +34,12 @@ public class UserService {
     public Boolean deleteTask(Integer taskId) {
         return userRepo.deleteTask(taskId);
     }
+
+    public List<Task> findTaskByUser(Integer userId) {
+        return userRepo.findAllTaskByUser(userId);
+    }
+
+    public Boolean editTask(Task task) {
+        return userRepo.editTask(task);
+    }
 }
