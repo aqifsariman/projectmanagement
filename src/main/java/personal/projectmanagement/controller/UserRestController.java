@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,5 +45,11 @@ public class UserRestController {
     public ResponseEntity<Boolean> createTask(@ModelAttribute("taskForm") Task task) {
         Boolean created = userSvc.createTask(task);
         return ResponseEntity.ok().body(created);
+    }
+
+    @DeleteMapping("/{taskId}")
+    public ResponseEntity<Boolean> deleteTask(@PathVariable("taskId") Integer taskId) {
+        Boolean deleted = userSvc.deleteTask(taskId);
+        return ResponseEntity.ok().body(deleted);
     }
 }

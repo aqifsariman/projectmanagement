@@ -27,7 +27,11 @@ public class UserService {
         return userRepo.createUser(user);
     }
 
-    public Boolean createTask(Task task){
+    public Boolean createTask(Task task) {
         return userRepo.createTask(task);
+    }
+
+    public Boolean deleteTask(Integer taskId) {
+        return userRepo.deleteTask(taskId);
     }
 }

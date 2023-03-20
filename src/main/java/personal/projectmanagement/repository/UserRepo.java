@@ -20,6 +20,7 @@ public class UserRepo {
     private final String USER_BY_ID_SQL = "select * from user where id = ?";
     private final String CREATE_USER_SQL = "insert into user (username, full_name, email, password, phone, date_of_birth, gender, role_id, designation_id) values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private final String CREATE_TASK_SQL = "insert into task (title, description, status_id, priority_id, assignee_id, user_id) values (?, ?, ? ,? ,? ,?)";
+    private final String DELETE_TASK_SQL = "delete from task where id = ?";
 
     public List<User> findAllUsers() {
         return jdbcTemplate.query(ALL_USERS_SQL, BeanPropertyRowMapper.newInstance(User.class));
@@ -43,6 +44,11 @@ public class UserRepo {
                 task.getDescription(), task.getStatusId(), task.getPriorityId(), task.getAssigneeId(),
                 task.getUserId());
         return (insertTask > 0) ? true : false;
+    }
+
+    public Boolean deleteTask(Integer taskId) {
+        Integer deleteTask = jdbcTemplate.update(DELETE_TASK_SQL, taskId);
+        return (deleteTask > 0) ? true : false;
     }
 
 }
