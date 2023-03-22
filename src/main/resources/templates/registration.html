@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Teko&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <title>PROJ Registration</title>
+</head>
+<style>
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+</style>
+
+<body>
+    <div class="p-5 title">
+        <h1>PROJ Registration</h1>
+        <form data-th-action="@{/registration}" method="post" data-th-object="${userValidation}" class="row g-3 mb-3">
+            <div class="col-md-4">
+                <div class="input-group">
+                    <span class="input-group-text">@</span>
+                    <input type="text" class="form-control" id="username" placeholder="Username"
+                        data-th-field="*{username}">
+                    <p class="mx-3" data-th-if="${#fields.hasErrors('username')}" data-th-errors="*{username}"
+                        data-th-errorclass="error"></p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <input type="text" class="form-control" id="fullName" placeholder="Full Name"
+                    data-th-field="*{fullName}">
+                <p data-th-if="${#fields.hasErrors('fullName')}" data-th-errors="*{fullName}"
+                    data-th-errorclass="error"></p>
+            </div>
+            <div class="col-md-10">
+                <input type="email" class="form-control" id="emaillAddress" placeholder="Email Address"
+                    data-th-field="*{email}">
+                <p data-th-if="${#fields.hasErrors('email')}" data-th-errors="*{email}" data-th-errorclass="error"></p>
+            </div>
+            <div class="col-md-3">
+                <input type="password" class="form-control" id="password" placeholder="Password"
+                    data-th-field="*{password}" onkeyup="check()">
+                <p data-th-if="${#fields.hasErrors('password')}" data-th-errors="*{password}"
+                    data-th-errorclass="error"></p>
+            </div>
+            <div class="col-md-3">
+                <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm Password"
+                    data-th-field="*{password}" onkeyup="check()">
+                <span id='message'></span>
+                <p data-th-if="${#fields.hasErrors('password')}" data-th-errors="*{password}"
+                    data-th-errorclass="error"></p>
+            </div>
+            <div class="col-md-3">
+                <input type="number" class="form-control" id="phone" placeholder="Phone Number" maxlength="8"
+                    data-th-field="*{phone}">
+                <p data-th-if="${#fields.hasErrors('phone')}" data-th-errors="*{phone}" data-th-errorclass="error"></p>
+            </div>
+            <div class="col-md-3">
+                <input type="date" class="form-control" id="dateOfBirth" placeholder="Date of Birth"
+                    data-th-field="*{dateOfBirth}" />
+            </div>
+            <div class="col-md-3">
+                <select class="form-select" id="gender" data-th-field="*{gender}">
+                    <p data-th-if="${#fields.hasErrors('gender')}" data-th-errors="*{gender}"
+                        data-th-errorclass="error"></p>
+                    <option selected disabled value=""></option>
+                    <option value="Male" data-th-text="Male"></option>
+                    <option value="Female" data-th-text="Female"></option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select class="form-select" id="role" data-th-field="*{roleId}">
+                    <p data-th-if="${#fields.hasErrors('roleId')}" data-th-errors="*{roleId}"
+                        data-th-errorclass="error"></p>
+                    <option selected disabled value="">Choose Role</option>
+                    <option data-th-each="role : ${roleList}" data-th-value="${role.id}"
+                        data-th-text="${role.roleName}"></option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select class="form-select" id="designation" data-th-field="*{designationId}">
+                    <p data-th-if="${#fields.hasErrors('designationId')}" data-th-errors="*{designationId}"
+                        data-th-errorclass="error"></p>
+                    <option selected disabled value="">Choose Designation</option>
+                    <option data-th-each="designation : ${designationList}" data-th-value="${designation.id}"
+                        data-th-text="${designation.designationName}"></option>
+                </select>
+            </div>
+            <div class="col-12">
+                <button class="btn btn-outline-dark" type="submit">Register</button>
+            </div>
+        </form>
+        <a href="index.html" style="text-decoration: none;" class="text-dark">Already a user? Login here.</a>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+        </script>
+    <script>
+        roleId = parseInt(document.getElementById("role").value);
+    </script>
+    <script>
+        var check = function () {
+            if (document.getElementById('password').value ==
+                document.getElementById('confirmPassword').value) {
+                document.getElementById('message').style.color = 'green';
+                document.getElementById('message').innerHTML = 'Password match!';
+            } else {
+                document.getElementById('message').style.color = 'red';
+                document.getElementById('message').innerHTML = 'Password do not match!';
+            }
+        }
+    </script>
+</body>
+
+</html>

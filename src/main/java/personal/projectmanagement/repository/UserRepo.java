@@ -7,8 +7,11 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import personal.projectmanagement.model.Designation;
+import personal.projectmanagement.model.Role;
 import personal.projectmanagement.model.Task;
 import personal.projectmanagement.model.User;
+import personal.projectmanagement.model.UserProfile;
 
 @Repository
 public class UserRepo {
@@ -18,11 +21,14 @@ public class UserRepo {
 
     private final String ALL_USERS_SQL = "select * from user";
     private final String USER_BY_ID_SQL = "select * from user where id = ?";
+    private final String USER_PROFILE_SQL = "select user.id, user.username, user.full_name, user.email, user.phone, designation.designation_name, role.role_name, user.date_of_birth from user inner join designation on user.designation_id = designation.id inner join role on role.id = user.role_id where user.id =  ?";
     private final String CREATE_USER_SQL = "insert into user (username, full_name, email, password, phone, date_of_birth, gender, role_id, designation_id) values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private final String CREATE_TASK_SQL = "insert into task (title, description, status_id, priority_id, assignee_id, user_id) values (?, ?, ? ,? ,? ,?)";
     private final String DELETE_TASK_SQL = "delete from task where id = ?";
     private final String ALL_TASK_BY_USER_SQL = "select * from task where user_id = ?";
     private final String EDIT_TASK_SQL = "update task set title = ?, description = ?, status_id = ?, priority_id = ? where id = ?";
+    private final String ROLES_SQL = "select * from role";
+    private final String DESIGNATION_SQL = "select * from designation";
 
     public List<User> findAllUsers() {
         return jdbcTemplate.query(ALL_USERS_SQL, BeanPropertyRowMapper.newInstance(User.class));
@@ -30,6 +36,18 @@ public class UserRepo {
 
     public User findUserById(Integer id) {
         return jdbcTemplate.queryForObject(USER_BY_ID_SQL, BeanPropertyRowMapper.newInstance(User.class), id);
+    }
+
+    public UserProfile findUserProfileById(Integer id) {
+        return jdbcTemplate.queryForObject(USER_PROFILE_SQL, BeanPropertyRowMapper.newInstance(UserProfile.class), id);
+    }
+
+    public List<Role> retrieveRoles() {
+        return jdbcTemplate.query(ROLES_SQL, BeanPropertyRowMapper.newInstance(Role.class));
+    }
+
+    public List<Designation> retrieveDesignations() {
+        return jdbcTemplate.query(DESIGNATION_SQL, BeanPropertyRowMapper.newInstance(Designation.class));
     }
 
     public Boolean createUser(User user) {

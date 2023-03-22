@@ -5,8 +5,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import personal.projectmanagement.model.Designation;
+import personal.projectmanagement.model.Role;
 import personal.projectmanagement.model.Task;
 import personal.projectmanagement.model.User;
+import personal.projectmanagement.model.UserProfile;
 import personal.projectmanagement.repository.UserRepo;
 
 @Service
@@ -21,6 +24,18 @@ public class UserService {
 
     public User findUserById(Integer id) {
         return userRepo.findUserById(id);
+    }
+
+    public UserProfile findUserProfileById(Integer id) {
+        return userRepo.findUserProfileById(id);
+    }
+
+    public List<Role> retrieveRoles() {
+        return userRepo.retrieveRoles();
+    }
+
+    public List<Designation> retrieveDesignations() {
+        return userRepo.retrieveDesignations();
     }
 
     public Boolean createUser(User user) {
